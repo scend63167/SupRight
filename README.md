@@ -6,6 +6,12 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 
 ![SupRight 菜单功能设置界面](docs/images/supright-menu-settings.png)
 
+## 下载测试包
+
+- [下载 SupRight v0.1.0（macOS ZIP）](https://github.com/scend63167/SupRight/releases/download/v0.1.0/SupRight-v0.1.0-macos-unsigned.zip)
+- [下载 SHA-256 校验文件](https://github.com/scend63167/SupRight/releases/download/v0.1.0/SupRight-v0.1.0-macos-unsigned.zip.sha256)
+- [查看 v0.1.0 发布说明](https://github.com/scend63167/SupRight/releases/tag/v0.1.0)
+
 ## 功能
 
 - 在所有 Finder 目录显示 `SupRight` 右键子菜单
@@ -23,7 +29,7 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 
 ## 安装测试版
 
-1. 从 GitHub Releases 下载 `SupRight-v0.1.0-macos-unsigned.zip` 并解压。
+1. [下载 `SupRight-v0.1.0-macos-unsigned.zip`](https://github.com/scend63167/SupRight/releases/download/v0.1.0/SupRight-v0.1.0-macos-unsigned.zip) 并解压。
 2. 将 `SupRight.app` 拖到“应用程序”文件夹。
 3. 首次打开若被 macOS 拦截：前往“系统设置 → 隐私与安全性”，选择“仍要打开”。
 4. 在“系统设置 → 隐私与安全性 → 完全磁盘访问”中开启 SupRight。
