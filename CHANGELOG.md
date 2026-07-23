@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.1] - 2026-07-23
+
+### 修复
+
+- 测试包改用 Apple Development 证书签名，使 Finder Sync 扩展能被 macOS 登记并出现在扩展管理页面。
+
+### 已知限制
+
+- 该版本尚未使用 Developer ID 签名或 Apple 公证；首次运行仍需用户手动绕过 Gatekeeper。
+
 ## [0.1.0] - 2026-07-23
 
 首个公开测试版。
@@ -18,3 +28,4 @@
 
 - 此版本尚未使用 Developer ID 签名或 Apple 公证；首次运行需用户手动绕过 Gatekeeper。
 - Finder 扩展需要系统确认启用，受保护目录还需要用户授予完全磁盘访问。
+- 该版本为 ad-hoc 签名，Finder Sync 扩展无法在普通安装流程中登记；请使用 v0.1.1 或更新版本。
