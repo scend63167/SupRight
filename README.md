@@ -1,0 +1,61 @@
+# SupRight
+
+SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目录快速新建常用文件、复制文件信息和打开 Terminal。
+
+> 当前版本：`v0.1.0`（未公证测试版）
+
+## 功能
+
+- 在所有 Finder 目录显示 `SupRight` 右键子菜单
+- 新建 TXT、Markdown、JSON、RTF、Word、Excel、PowerPoint 文件
+- 新建“自定义文件”：直接输入完整名称，例如 `Untitled.py` 或 `config.yaml`
+- 自动避免重名，绝不覆盖现有文件
+- 复制文件名、复制完整路径、在当前目录打开 Terminal
+- 在应用内开关每个菜单功能
+- 支持简体中文与英文
+
+## 系统要求
+
+- macOS 26.5 或更高版本
+- 完全磁盘访问（用于桌面、文稿、下载等受保护目录的写入）
+
+## 安装测试版
+
+1. 从 GitHub Releases 下载 `SupRight-v0.1.0-macos-unsigned.zip` 并解压。
+2. 将 `SupRight.app` 拖到“应用程序”文件夹。
+3. 首次打开若被 macOS 拦截：前往“系统设置 → 隐私与安全性”，选择“仍要打开”。
+4. 在“系统设置 → 隐私与安全性 → 完全磁盘访问”中开启 SupRight。
+5. 打开 Finder，在任意目录空白处右键，选择 `SupRight`。
+
+这是未签名、未公证的测试包。请仅从本项目的 GitHub Release 下载；未来正式版本会采用 Developer ID 签名和 Apple 公证。
+
+## 从源码运行
+
+1. 安装 Xcode 17 或更新版本。
+2. 克隆仓库，打开 `SupRight.xcodeproj`。
+3. 选择 `SupRight` Scheme 与“我的 Mac”，在 Signing & Capabilities 中选择你自己的开发团队。
+4. 运行应用，并按上方步骤授予完全磁盘访问。
+
+如果 Xcode 报 Bundle Identifier 或 App Group 冲突，请按[本地开发与签名说明](docs/DEVELOPMENT.md)改为自己的标识。
+
+## 打包
+
+执行：
+
+```zsh
+./Scripts/package-beta.sh
+```
+
+脚本会在 `dist/` 生成未签名测试包 ZIP 及 SHA-256 校验文件。详情见 [发布说明](docs/RELEASING.md)。
+
+## 隐私与权限
+
+SupRight 不收集、上传或同步你的文件内容、文件路径、使用行为或身份数据。
+
+Finder 扩展仅在你打开右键菜单或执行菜单操作时处理当前目录和所选项目。完全磁盘访问只用于你明确发起的文件创建等操作；只读目录、SIP 保护位置和网络卷仍可能拒绝操作。
+
+## 贡献与反馈
+
+- 使用 [Issues](../../issues) 报告问题或提出功能建议。
+- 提交代码前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
+- 项目采用 [MIT License](LICENSE)，更新内容见 [CHANGELOG.md](CHANGELOG.md)。

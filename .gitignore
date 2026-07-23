@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Local instructions may contain personal workspace paths.
+AGENTS.md
+
+# Xcode user state and build products
+DerivedData/
+build/
+dist/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+SupRight.xcodeproj/xcuserdata/
+SupRight.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Release artifacts
+*.xcarchive
+*.dSYM.zip
+*.app.zip
+*.dmg
+*.sha256
