@@ -4,6 +4,8 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 
 > 当前版本：`v0.1.0`（未公证测试版）
 
+![SupRight 菜单功能设置界面](docs/images/supright-menu-settings.png)
+
 ## 功能
 
 - 在所有 Finder 目录显示 `SupRight` 右键子菜单
