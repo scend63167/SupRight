@@ -3,7 +3,7 @@
 set -euo pipefail
 
 project_root="$(cd "$(dirname "$0")/.." && pwd)"
-version="${VERSION:-0.2.1}"
+version="${VERSION:-0.2.2}"
 output_dir="$project_root/dist"
 archive_path="$output_dir/SupRight-v${version}.xcarchive"
 app_path="$archive_path/Products/Applications/SupRight.app"

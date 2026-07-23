@@ -27,14 +27,17 @@ final class SupRightAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate
     private let openSettingsItem = NSMenuItem()
     private let openSystemSettingsItem = NSMenuItem()
     private let quitItem = NSMenuItem()
+    private var suppressesInitialWindow = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        suppressesInitialWindow = SupRightConfiguration.consumeFinderOperationLaunch()
         SupRightOperationDispatcher.shared.start()
         installStatusItem()
 
-        if SupRightConfiguration.launchesAtLogin {
+        if SupRightConfiguration.launchesAtLogin || suppressesInitialWindow {
             DispatchQueue.main.async {
                 NSApp.hide(nil)
+                self.suppressesInitialWindow = false
             }
         }
     }
@@ -44,7 +47,7 @@ final class SupRightAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if !flag {
+        if !flag, !suppressesInitialWindow {
             SupRightConfiguration.openAppWindow()
         }
         return true

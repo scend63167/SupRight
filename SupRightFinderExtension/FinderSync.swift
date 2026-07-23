@@ -5,6 +5,8 @@ final class FinderSync: FIFinderSync {
     private enum Configuration {
         static let appGroup = "4VZQ365DP6.com.iiimac.SupRight"
         static let extensionLastActiveKey = "finder-extension-last-active"
+        static let finderOperationLaunchKey = "finder-operation-launch"
+        static let containingAppBundleIdentifier = "com.iiimac.SupRight"
     }
 
     private enum MenuFeature: String {
@@ -249,8 +251,13 @@ final class FinderSync: FIFinderSync {
         }
 
         defaults.set(data, forKey: key)
-        defaults.synchronize()
-        launchContainingApp()
+        if !isContainingAppRunning() {
+            defaults.set(true, forKey: Configuration.finderOperationLaunchKey)
+            defaults.synchronize()
+            launchContainingApp()
+        } else {
+            defaults.synchronize()
+        }
         let name = CFNotificationName("4VZQ365DP6.com.iiimac.SupRight.operation-request" as CFString)
         CFNotificationCenterPostNotification(
             CFNotificationCenterGetDarwinNotifyCenter(),
@@ -271,6 +278,12 @@ final class FinderSync: FIFinderSync {
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.activates = false
         NSWorkspace.shared.openApplication(at: appURL, configuration: configuration)
+    }
+
+    private func isContainingAppRunning() -> Bool {
+        !NSRunningApplication.runningApplications(
+            withBundleIdentifier: Configuration.containingAppBundleIdentifier
+        ).isEmpty
     }
 
     private func showError(message: String) {

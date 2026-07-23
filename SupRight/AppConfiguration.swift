@@ -81,6 +81,7 @@ enum SupRightConfiguration {
     static let menuBarVisibleKey = "menu-bar-visible"
     static let languageKey = "app-language"
     static let finderExtensionLastActiveKey = "finder-extension-last-active"
+    static let finderOperationLaunchKey = "finder-operation-launch"
 
     static var launchesAtLogin: Bool {
         SMAppService.mainApp.status == .enabled
@@ -104,6 +105,13 @@ enum SupRightConfiguration {
 
     static func openLoginItemsSettings() {
         SMAppService.openSystemSettingsLoginItems()
+    }
+
+    static func consumeFinderOperationLaunch() -> Bool {
+        guard defaults.bool(forKey: finderOperationLaunchKey) else { return false }
+        defaults.removeObject(forKey: finderOperationLaunchKey)
+        defaults.synchronize()
+        return true
     }
 
     static var enabledFeatureCount: Int {
