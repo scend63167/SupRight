@@ -294,8 +294,70 @@ private struct OverviewPage: View {
                 SummaryCard(title: supRightText("目录范围", "Directory Scope"), value: supRightText("所有目录", "All directories"), detail: supRightText("由主程序执行操作", "Operations run in the app"), color: .purple)
             }
 
+            BackgroundLaunchCard()
+
             PermissionNotice()
         }
+    }
+}
+
+private struct BackgroundLaunchCard: View {
+    @State private var launchesAtLogin = false
+    @State private var needsApproval = false
+    @State private var errorMessage: String?
+
+    var body: some View {
+        SettingsCard {
+            VStack(alignment: .leading, spacing: 16) {
+                Label(supRightText("后台启动", "Background Launch"), systemImage: "power.circle")
+                    .font(.title3.weight(.semibold))
+
+                Text(supRightText("登录 Mac 后自动启动 SupRight 并驻留在菜单栏。关闭设置窗口不会退出；你仍可从菜单栏选择“退出 SupRight”。", "Start SupRight at login and keep it in the menu bar. Closing the settings window does not quit the app; you can still quit it from the menu bar."))
+                    .foregroundStyle(.secondary)
+
+                Toggle(supRightText("登录时后台启动", "Launch in background at login"), isOn: Binding(
+                    get: { launchesAtLogin },
+                    set: { updateLaunchAtLogin($0) }
+                ))
+                .toggleStyle(SupRightToggleStyle())
+
+                if needsApproval {
+                    Label(supRightText("需要在系统设置中确认登录项权限。", "Approval is required in Login Items settings."), systemImage: "exclamationmark.triangle.fill")
+                        .font(.footnote)
+                        .foregroundStyle(.orange)
+                }
+
+                Button(supRightText("打开登录项设置", "Open Login Items Settings")) {
+                    SupRightConfiguration.openLoginItemsSettings()
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+        .onAppear(perform: refresh)
+        .alert(supRightText("无法更新后台启动设置", "Unable to update background launch"), isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { isPresented in
+                if !isPresented { errorMessage = nil }
+            }
+        )) {
+            Button(supRightText("好", "OK"), role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "")
+        }
+    }
+
+    private func updateLaunchAtLogin(_ enabled: Bool) {
+        do {
+            try SupRightConfiguration.setLaunchAtLogin(enabled)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        refresh()
+    }
+
+    private func refresh() {
+        launchesAtLogin = SupRightConfiguration.launchesAtLogin || SupRightConfiguration.launchAtLoginNeedsApproval
+        needsApproval = SupRightConfiguration.launchAtLoginNeedsApproval
     }
 }
 

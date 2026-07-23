@@ -1,5 +1,6 @@
 import AppKit
 import FinderSync
+import ServiceManagement
 import SwiftUI
 
 enum SupRightFeature: String, CaseIterable, Identifiable {
@@ -81,6 +82,30 @@ enum SupRightConfiguration {
     static let languageKey = "app-language"
     static let finderExtensionLastActiveKey = "finder-extension-last-active"
 
+    static var launchesAtLogin: Bool {
+        SMAppService.mainApp.status == .enabled
+    }
+
+    static var launchAtLoginNeedsApproval: Bool {
+        SMAppService.mainApp.status == .requiresApproval
+    }
+
+    static func setLaunchAtLogin(_ enabled: Bool) throws {
+        let service = SMAppService.mainApp
+
+        if enabled {
+            guard service.status == .notRegistered else { return }
+            try service.register()
+        } else {
+            guard service.status != .notRegistered else { return }
+            try service.unregister()
+        }
+    }
+
+    static func openLoginItemsSettings() {
+        SMAppService.openSystemSettingsLoginItems()
+    }
+
     static var enabledFeatureCount: Int {
         var count = 0
         for feature in SupRightFeature.allCases where isEnabled(feature) {
@@ -156,6 +181,7 @@ enum SupRightConfiguration {
 
     static func openAppWindow() {
         NSApp.activate(ignoringOtherApps: true)
+        NSApp.unhide(nil)
         NSApp.windows.first(where: { $0.canBecomeKey })?.makeKeyAndOrderFront(nil)
     }
 

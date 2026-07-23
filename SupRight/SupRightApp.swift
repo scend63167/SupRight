@@ -31,6 +31,23 @@ final class SupRightAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate
     func applicationDidFinishLaunching(_ notification: Notification) {
         SupRightOperationDispatcher.shared.start()
         installStatusItem()
+
+        if SupRightConfiguration.launchesAtLogin {
+            DispatchQueue.main.async {
+                NSApp.hide(nil)
+            }
+        }
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag {
+            SupRightConfiguration.openAppWindow()
+        }
+        return true
     }
 
     private func installStatusItem() {
