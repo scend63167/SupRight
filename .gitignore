@@ -13,7 +13,7 @@ dist/
 *.xccheckout
 SupRight.xcodeproj/xcuserdata/
 SupRight.xcodeproj/project.xcworkspace/xcuserdata/
-
+.idea
 # Release artifacts
 *.xcarchive
 *.dSYM.zip
