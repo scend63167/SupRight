@@ -22,7 +22,7 @@ private enum SupRightPalette {
 }
 
 struct ContentView: View {
-    @State private var selection: SettingsSection = .menuFeatures
+    @State private var selection: SettingsSection = .overview
     @AppStorage(SupRightConfiguration.languageKey, store: SupRightConfiguration.defaults) private var languageRawValue = SupRightLanguage.system.rawValue
 
     var body: some View {
@@ -64,8 +64,8 @@ struct ContentView: View {
 }
 
 private enum SettingsSection: String, CaseIterable, Identifiable {
-    case menuFeatures
     case overview
+    case menuFeatures
     case permissions
     case diagnostics
     case language
@@ -118,12 +118,6 @@ private struct SettingsSidebar: View {
             .padding(.horizontal, 22)
             .padding(.top, 30)
             .padding(.bottom, 34)
-
-            Text(supRightText("工作区", "WORKSPACE"))
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.tertiary)
-                .padding(.horizontal, 22)
-                .padding(.bottom, 8)
 
             ForEach(SettingsSection.allCases) { section in
                 SidebarNavigationRow(
