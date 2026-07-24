@@ -2,15 +2,15 @@
 
 SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目录快速新建常用文件、复制文件信息和打开 Terminal。
 
-> 当前版本：`v0.2.3`（开发证书签名、未公证测试版）
+> 当前版本：`v0.2.4`（开发证书签名、未公证测试版）
 
 ![SupRight 菜单功能设置界面](docs/images/f8e01091e1f368bcfd2854aa55031e39.png)
 
 ## 下载测试包
 
-- [下载 SupRight v0.2.3（macOS ZIP）](https://github.com/scend63167/SupRight/releases/download/v0.2.3/SupRight-v0.2.3-macos-development-signed.zip)
-- [下载 SHA-256 校验文件](https://github.com/scend63167/SupRight/releases/download/v0.2.3/SupRight-v0.2.3-macos-development-signed.zip.sha256)
-- [查看 v0.2.3 发布说明](https://github.com/scend63167/SupRight/releases/tag/v0.2.3)
+- [下载 SupRight v0.2.4（macOS ZIP）](https://github.com/scend63167/SupRight/releases/download/v0.2.4/SupRight-v0.2.4-macos-development-signed.zip)
+- [下载 SHA-256 校验文件](https://github.com/scend63167/SupRight/releases/download/v0.2.4/SupRight-v0.2.4-macos-development-signed.zip.sha256)
+- [查看 v0.2.4 发布说明](https://github.com/scend63167/SupRight/releases/tag/v0.2.4)
 
 ## 功能
 
@@ -27,9 +27,12 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 
 
 > ⚠️ **重要提示**：安装以及本地运行如无法解决寻求AI帮助。
+>
+> 系统要求：macOS 15.5 或更高版本。
+
 ## 安装测试版
 
-1. [下载 `SupRight-v0.2.3-macos-development-signed.zip`](https://github.com/scend63167/SupRight/releases/download/v0.2.3/SupRight-v0.2.3-macos-development-signed.zip) 并解压。
+1. [下载 `SupRight-v0.2.4-macos-development-signed.zip`](https://github.com/scend63167/SupRight/releases/download/v0.2.4/SupRight-v0.2.4-macos-development-signed.zip) 并解压。
 2. 将 `SupRight.app` 拖到“应用程序”文件夹。
 3. 首次打开若被 macOS 拦截：前往“系统设置 → 隐私与安全性”，选择“仍要打开”。
 4. 在“系统设置 → 隐私与安全性 → 完全磁盘访问”中开启 SupRight。
