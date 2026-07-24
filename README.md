@@ -4,7 +4,7 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 
 > 当前版本：`v0.2.2`（开发证书签名、未公证测试版）
 
-![SupRight 菜单功能设置界面](docs/images/supright-menu-settings.png)
+![SupRight 菜单功能设置界面](docs/images/f8e01091e1f368bcfd2854aa55031e39.png)
 
 ## 下载测试包
 
@@ -68,6 +68,27 @@ SIGNING_IDENTITY='Apple Development: your-name (TEAMID)' ./Scripts/package-beta.
 
 脚本会在 `dist/` 生成开发证书签名的测试包 ZIP 及 SHA-256 校验文件。详情见 [发布说明](docs/RELEASING.md)。
 
+## 未来规划
+
+SupRight 想做的是让 Finder 少一点来回切换、多一点顺手。
+
+### 下一步
+
+- [ ] 解压缩。
+- [ ] 常用目录：把常去的项目、下载或归档目录固定到右键菜单。
+- [ ] 复制 / 移动到：不用打开多层 Finder 窗口，直接将文件送往常用位置。
+- [ ] 剪切与粘贴：补齐更符合直觉的文件搬运流程。
+- [ ] 显示 / 隐藏隐藏文件：在需要时快速查看隐藏的配置文件等内容。
+- [ ] 更多打开方式：除 Terminal 外，按需支持 iTerm2、VS Code 等常用工具。
+
+### 持续探索
+
+- [ ] 更丰富的新建文件模板与自定义模板。
+- [ ] 菜单排序、分组与自定义命令，让右键菜单更贴合个人习惯。
+- [ ] 文件夹图标与外观小工具，帮助区分重要目录。
+
+路线图不是功能承诺。欢迎通过 [Issues](../../issues) 告诉我们：哪一个操作最值得优先做。
+
 ## 隐私与权限
 
 SupRight 不收集、上传或同步你的文件内容、文件路径、使用行为或身份数据。
@@ -79,3 +100,15 @@ Finder 扩展仅在你打开右键菜单或执行菜单操作时处理当前目�
 - 使用 [Issues](../../issues) 报告问题或提出功能建议。
 - 提交代码前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
 - 项目采用 [MIT License](LICENSE)，更新内容见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 捐赠支持
+
+SupRight 会继续免费开源。如果它曾让你少翻一次目录、少敲一行命令，或者只是让 Finder 用起来更顺手，欢迎请开发者喝杯咖啡。
+
+你的支持会用来持续维护兼容性、打磨体验，并为将来的签名与公证准备成本。捐赠完全自愿，不会解锁任何功能；每一份心意，都是这个小工具继续认真生长的理由。
+
+<p align="center">
+  <img src="docs/images/supright-donation-qr.png" width="220" alt="SupRight 捐赠二维码">
+</p>
+
+<p align="center">感谢你愿意支持一个让 Finder 更好用的小工具。</p>
