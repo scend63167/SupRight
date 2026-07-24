@@ -23,11 +23,10 @@ SupRight 是一个开源的 macOS Finder 右键菜单增强工具：在当前目
 - 可选“登录时后台启动”，并在关闭设置窗口后继续驻留菜单栏、不显示 Dock 图标
 - 支持简体中文与英文
 
-## 系统要求
 
-- macOS 26.5 或更高版本
-- 完全磁盘访问（用于桌面、文稿、下载等受保护目录的写入）
 
+
+> ⚠️ **重要提示**：安装以及本地运行如无法解决寻求AI帮助。
 ## 安装测试版
 
 1. [下载 `SupRight-v0.2.3-macos-development-signed.zip`](https://github.com/scend63167/SupRight/releases/download/v0.2.3/SupRight-v0.2.3-macos-development-signed.zip) 并解压。
