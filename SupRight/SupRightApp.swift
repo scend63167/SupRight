@@ -101,9 +101,13 @@ final class SupRightAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate
             "已启用 \(enabledCount) / \(SupRightFeature.allCases.count) 项功能",
             "\(enabledCount) / \(SupRightFeature.allCases.count) features enabled"
         )
-        extensionStateItem.title = SupRightConfiguration.finderExtensionEnabled
-            ? supRightText("Finder 扩展已启用", "Finder extension enabled")
-            : supRightText("Finder 扩展待确认", "Finder extension needs attention")
+        if SupRightConfiguration.isRunningFromAppTranslocation {
+            extensionStateItem.title = supRightText("请将 SupRight 移至“应用程序”", "Move SupRight to Applications")
+        } else {
+            extensionStateItem.title = SupRightConfiguration.finderExtensionEnabled
+                ? supRightText("Finder 扩展已启用", "Finder extension enabled")
+                : supRightText("Finder 扩展待确认", "Finder extension needs attention")
+        }
         diskAccessItem.title = SupRightConfiguration.hasFullDiskAccess
             ? supRightText("完全磁盘访问已确认", "Full Disk Access confirmed")
             : supRightText("完全磁盘访问：请在系统设置中确认", "Full Disk Access: confirm in System Settings")

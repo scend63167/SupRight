@@ -80,7 +80,6 @@ enum SupRightConfiguration {
     static let defaults = UserDefaults(suiteName: appGroup) ?? .standard
     static let menuBarVisibleKey = "menu-bar-visible"
     static let languageKey = "app-language"
-    static let finderExtensionLastActiveKey = "finder-extension-last-active"
     static let finderOperationLaunchKey = "finder-operation-launch"
 
     static var launchesAtLogin: Bool {
@@ -129,16 +128,12 @@ enum SupRightConfiguration {
         return defaults.bool(forKey: feature.preferenceKey)
     }
 
-    static var finderExtensionEnabled: Bool {
-        if FIFinderSyncController.isExtensionEnabled {
-            return true
-        }
+    static var isRunningFromAppTranslocation: Bool {
+        Bundle.main.bundleURL.path.contains("/AppTranslocation/")
+    }
 
-        // In Xcode-run builds, macOS can report `false` even while the Finder
-        // Sync extension is serving contextual menus. A recent activity ping is
-        // therefore the more useful signal for the app's diagnostic UI.
-        let lastActive = defaults.double(forKey: finderExtensionLastActiveKey)
-        return lastActive > Date().timeIntervalSince1970 - 24 * 60 * 60
+    static var finderExtensionEnabled: Bool {
+        !isRunningFromAppTranslocation && FIFinderSyncController.isExtensionEnabled
     }
 
     /// macOS does not expose a public API for reading the Full Disk Access
@@ -191,6 +186,10 @@ enum SupRightConfiguration {
         NSApp.activate(ignoringOtherApps: true)
         NSApp.unhide(nil)
         NSApp.windows.first(where: { $0.canBecomeKey })?.makeKeyAndOrderFront(nil)
+    }
+
+    static func openApplicationsFolder() {
+        NSWorkspace.shared.open(URL(fileURLWithPath: "/Applications", isDirectory: true))
     }
 
     static func openExtensionManagement() {

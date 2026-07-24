@@ -40,8 +40,6 @@ struct ContentView: View {
                         OverviewPage()
                     case .menuFeatures:
                         MenuFeaturesPage()
-                    case .permissions:
-                        PermissionsPage()
                     case .diagnostics:
                         DiagnosticsPage()
                     case .language:
@@ -66,7 +64,6 @@ struct ContentView: View {
 private enum SettingsSection: String, CaseIterable, Identifiable {
     case overview
     case menuFeatures
-    case permissions
     case diagnostics
     case language
 
@@ -76,7 +73,6 @@ private enum SettingsSection: String, CaseIterable, Identifiable {
         switch self {
         case .menuFeatures: supRightText("菜单功能", "Menu Features")
         case .overview: supRightText("概览", "Overview")
-        case .permissions: supRightText("权限与访问", "Permissions & Access")
         case .diagnostics: supRightText("诊断", "Diagnostics")
         case .language: supRightText("语言", "Language")
         }
@@ -86,7 +82,6 @@ private enum SettingsSection: String, CaseIterable, Identifiable {
         switch self {
         case .menuFeatures: "slider.horizontal.3"
         case .overview: "circle.grid.2x2"
-        case .permissions: "lock.shield"
         case .diagnostics: "stethoscope"
         case .language: "globe"
         }
@@ -137,7 +132,7 @@ private struct SettingsSidebar: View {
                 Circle()
                     .fill(SupRightConfiguration.finderExtensionEnabled ? Color.green : Color.orange)
                     .frame(width: 10, height: 10)
-                Text(SupRightConfiguration.finderExtensionEnabled ? supRightText("Finder 扩展已启用", "Finder extension enabled") : supRightText("Finder 扩展待确认", "Finder extension needs attention"))
+                Text(finderExtensionStatusText)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -150,6 +145,15 @@ private struct SettingsSidebar: View {
                 endPoint: .bottomTrailing
             )
         )
+    }
+
+    private var finderExtensionStatusText: String {
+        if SupRightConfiguration.isRunningFromAppTranslocation {
+            return supRightText("请移至“应用程序”", "Move to Applications")
+        }
+        return SupRightConfiguration.finderExtensionEnabled
+            ? supRightText("Finder 扩展已启用", "Finder extension enabled")
+            : supRightText("Finder 扩展待确认", "Finder extension needs attention")
     }
 }
 
@@ -282,9 +286,13 @@ private struct OverviewPage: View {
                 status: supRightText("已启用 \(SupRightConfiguration.enabledFeatureCount) 项", "\(SupRightConfiguration.enabledFeatureCount) enabled")
             )
 
+            if SupRightConfiguration.isRunningFromAppTranslocation {
+                InstallationNotice()
+            }
+
             HStack(spacing: 16) {
                 SummaryCard(title: supRightText("菜单功能", "Menu Features"), value: "\(SupRightConfiguration.enabledFeatureCount) / \(SupRightFeature.allCases.count)", detail: supRightText("项已启用", "enabled"), color: .accentColor)
-                SummaryCard(title: supRightText("Finder 扩展", "Finder Extension"), value: SupRightConfiguration.finderExtensionEnabled ? supRightText("已启用", "Enabled") : supRightText("待确认", "Needs attention"), detail: supRightText("系统扩展状态", "Extension status"), color: SupRightConfiguration.finderExtensionEnabled ? .green : .orange)
+                SummaryCard(title: supRightText("Finder 扩展", "Finder Extension"), value: finderExtensionStatusText, detail: finderExtensionDetail, color: SupRightConfiguration.finderExtensionEnabled ? .green : .orange)
                 SummaryCard(title: supRightText("目录范围", "Directory Scope"), value: supRightText("所有目录", "All directories"), detail: supRightText("由主程序执行操作", "Operations run in the app"), color: .purple)
             }
 
@@ -292,6 +300,21 @@ private struct OverviewPage: View {
 
             PermissionNotice()
         }
+    }
+
+    private var finderExtensionStatusText: String {
+        if SupRightConfiguration.isRunningFromAppTranslocation {
+            return supRightText("需要安装", "Install required")
+        }
+        return SupRightConfiguration.finderExtensionEnabled
+            ? supRightText("已启用", "Enabled")
+            : supRightText("待确认", "Needs attention")
+    }
+
+    private var finderExtensionDetail: String {
+        SupRightConfiguration.isRunningFromAppTranslocation
+            ? supRightText("请移至“应用程序”", "Move to Applications")
+            : supRightText("系统扩展状态", "Extension status")
     }
 }
 
@@ -355,43 +378,6 @@ private struct BackgroundLaunchCard: View {
     }
 }
 
-private struct PermissionsPage: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            PageHeader(
-                title: supRightText("权限与访问", "Permissions & Access"),
-                subtitle: supRightText("菜单默认在所有 Finder 目录显示，但文件操作始终受 macOS 权限控制。", "Menus appear in all Finder directories, while file actions remain subject to macOS permissions.")
-            )
-
-            SettingsCard {
-                VStack(alignment: .leading, spacing: 12) {
-                    Label(supRightText("所有 Finder 目录", "All Finder directories"), systemImage: "folder.badge.gearshape")
-                        .font(.title3.weight(.semibold))
-                    Text(supRightText("SupRight 不会后台扫描、索引或读取文件；只有当你在 Finder 中请求菜单或执行操作时，才会处理当前路径。", "SupRight does not scan, index, or read files in the background. It handles a path only when you request a Finder action."))
-                        .foregroundStyle(.secondary)
-                }
-            }
-
-            SettingsCard {
-                VStack(alignment: .leading, spacing: 16) {
-                    Label(supRightText("完全磁盘访问", "Full Disk Access"), systemImage: "lock.shield")
-                        .font(.title3.weight(.semibold))
-                    Text(supRightText("Finder 扩展负责菜单；主程序负责创建文件等操作。受保护目录需要你在系统设置中手动确认“完全磁盘访问”。", "The Finder extension provides menus; the app creates files and runs actions. Protected locations require you to grant Full Disk Access in System Settings."))
-                        .foregroundStyle(.secondary)
-                    Button(supRightText("前往系统设置", "Open System Settings")) {
-                        SupRightConfiguration.openFullDiskAccessSettings()
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-            }
-
-            Text(supRightText("即使完成设置，POSIX 权限、ACL、SIP、只读卷或网络卷仍可能阻止写入。", "POSIX permissions, ACLs, SIP, read-only volumes, and network volumes can still prevent writing."))
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-    }
-}
-
 private struct DiagnosticsPage: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -400,11 +386,15 @@ private struct DiagnosticsPage: View {
                 subtitle: supRightText("检查 SupRight 的基础运行状态，并在菜单未出现时快速定位问题。", "Check SupRight's basic runtime state and troubleshoot a missing menu.")
             )
 
+            if SupRightConfiguration.isRunningFromAppTranslocation {
+                InstallationNotice()
+            }
+
             SettingsCard {
                 VStack(spacing: 0) {
                     DiagnosticRow(
                         title: supRightText("Finder 扩展", "Finder Extension"),
-                        value: SupRightConfiguration.finderExtensionEnabled ? supRightText("已启用", "Enabled") : supRightText("待确认", "Needs attention"),
+                        value: finderExtensionStatusText,
                         color: SupRightConfiguration.finderExtensionEnabled ? .green : .orange
                     )
                     Divider()
@@ -417,7 +407,7 @@ private struct DiagnosticsPage: View {
             }
 
             HStack(spacing: 12) {
-                Button(supRightText("打开扩展管理", "Manage Extension")) {
+                Button(supRightText("查看系统扩展设置", "View Extension Settings")) {
                     SupRightConfiguration.openExtensionManagement()
                 }
                 .buttonStyle(.bordered)
@@ -428,9 +418,42 @@ private struct DiagnosticsPage: View {
                 .buttonStyle(.bordered)
             }
 
-            Text(supRightText("若 Finder 右键菜单未显示，请先确认扩展已启用，再重新打开 Finder 窗口。", "If the Finder menu is missing, confirm the extension is enabled and then reopen the Finder window."))
+            Text(supRightText("“文件提供程序”与 Finder Sync 是不同类别，SupRight 不会显示在那个列表中。完成安装后若菜单仍未出现，请重新打开 Finder 窗口。", "File Providers and Finder Sync are different extension categories, so SupRight will not appear in that list. After installation, reopen a Finder window if the menu is still missing."))
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+        }
+    }
+
+    private var finderExtensionStatusText: String {
+        if SupRightConfiguration.isRunningFromAppTranslocation {
+            return supRightText("需移至“应用程序”", "Move to Applications")
+        }
+        return SupRightConfiguration.finderExtensionEnabled
+            ? supRightText("已启用", "Enabled")
+            : supRightText("待确认", "Needs attention")
+    }
+}
+
+private struct InstallationNotice: View {
+    var body: some View {
+        SettingsCard {
+            HStack(alignment: .top, spacing: 14) {
+                Image(systemName: "arrow.down.app.fill")
+                    .font(.title2)
+                    .foregroundStyle(.orange)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(supRightText("请先安装到“应用程序”", "Install SupRight in Applications first"))
+                        .font(.headline)
+                    Text(supRightText("SupRight 当前直接从“下载”打开，macOS 正在隔离运行它，Finder 右键菜单可能不会加载。请退出 SupRight，把 SupRight.app 拖到“应用程序”文件夹，再从那里重新打开。", "SupRight is running from Downloads in macOS app isolation, so Finder may not load its context menu. Quit SupRight, drag SupRight.app to Applications, then open it from there."))
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Button(supRightText("打开“应用程序”文件夹", "Open Applications Folder")) {
+                        SupRightConfiguration.openApplicationsFolder()
+                    }
+                    .buttonStyle(.bordered)
+                }
+            }
         }
     }
 }

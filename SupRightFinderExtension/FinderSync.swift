@@ -4,7 +4,6 @@ import FinderSync
 final class FinderSync: FIFinderSync {
     private enum Configuration {
         static let appGroup = "4VZQ365DP6.com.iiimac.SupRight"
-        static let extensionLastActiveKey = "finder-extension-last-active"
         static let finderOperationLaunchKey = "finder-operation-launch"
         static let containingAppBundleIdentifier = "com.iiimac.SupRight"
     }
@@ -69,11 +68,9 @@ final class FinderSync: FIFinderSync {
     override init() {
         super.init()
         FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
-        reportActivity()
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
-        reportActivity()
         let menu = NSMenu()
         guard let destination = destinationDirectory() else {
             return menu
@@ -156,12 +153,6 @@ final class FinderSync: FIFinderSync {
             return true
         }
         return defaults?.bool(forKey: feature.preferenceKey) ?? true
-    }
-
-    private func reportActivity() {
-        guard let defaults = UserDefaults(suiteName: Configuration.appGroup) else { return }
-        defaults.set(Date().timeIntervalSince1970, forKey: Configuration.extensionLastActiveKey)
-        defaults.synchronize()
     }
 
     private func createFile(of fileType: NewFileType) {
