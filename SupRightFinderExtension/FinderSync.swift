@@ -67,7 +67,7 @@ final class FinderSync: FIFinderSync {
 
     override init() {
         super.init()
-        FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
+        FIFinderSyncController.default().directoryURLs = managedDirectoryURLs()
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
@@ -213,6 +213,24 @@ final class FinderSync: FIFinderSync {
 
         let values = try? candidate.resourceValues(forKeys: [.isDirectoryKey])
         return values?.isDirectory == true ? candidate : candidate.deletingLastPathComponent()
+    }
+
+    private func managedDirectoryURLs() -> Set<URL> {
+        let fileManager = FileManager.default
+        var directories: Set<URL> = [
+            URL(fileURLWithPath: "/"),
+            URL(fileURLWithPath: "/Applications", isDirectory: true),
+            URL(fileURLWithPath: "/Users", isDirectory: true),
+            fileManager.homeDirectoryForCurrentUser
+        ]
+
+        let mountedVolumes = fileManager.mountedVolumeURLs(
+            includingResourceValuesForKeys: nil,
+            options: [.skipHiddenVolumes]
+        ) ?? []
+        directories.formUnion(mountedVolumes)
+
+        return directories
     }
 
     private struct Operation: Codable {
